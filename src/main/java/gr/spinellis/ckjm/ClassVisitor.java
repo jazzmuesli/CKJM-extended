@@ -19,7 +19,7 @@ package gr.spinellis.ckjm;
 import gr.spinellis.ckjm.utils.LoggerHelper;
 import org.apache.bcel.classfile.*;
 import org.apache.bcel.generic.*;
-import org.apache.bcel.Constants;
+import org.apache.bcel.Const;
 import java.util.*;
 import java.lang.reflect.Modifier;
 
@@ -107,7 +107,7 @@ public class ClassVisitor extends org.apache.bcel.classfile.EmptyVisitor {
         try {
 			mClassMetrics.setDit(jc.getSuperClasses().length);
 		} catch (ClassNotFoundException e) {
-			throw new IllegalArgumentException(e);
+			LoggerHelper.printError("Can't load " + e.getMessage() + " for class " + jc.getClassName());
 		}
         registerCoupling(super_name);
 
@@ -211,7 +211,7 @@ public class ClassVisitor extends org.apache.bcel.classfile.EmptyVisitor {
     static String className(Type t) {
         String ts = t.toString();
 
-        if (t.getType() <= Constants.T_VOID) {
+        if (t.getType() <= Const.T_VOID) {
             return "java.PRIMITIVE";
         } else if(t instanceof ArrayType) {
             ArrayType at = (ArrayType)t;
