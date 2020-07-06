@@ -101,7 +101,7 @@ public class MetricsFilter implements ICountingProperities {
 				JavaClass javaClass = cpRepo.loadClass(className);
 				mf.processClass(javaClass);
 			} catch (ClassNotFoundException e) {
-				LoggerHelper.printError("Can't process class " + className + " due to " + e.getMessage());
+				LoggerHelper.handleClassNotFoundException(className, e);
 			}
         }
             

@@ -8,6 +8,8 @@ package gr.spinellis.ckjm;
 import org.apache.bcel.classfile.JavaClass;
 import org.apache.bcel.classfile.Method;
 
+import gr.spinellis.ckjm.utils.LoggerHelper;
+
 /**
  *
  * @author marian
@@ -63,7 +65,7 @@ public class MfaClassVisitor extends AbstractClassVisitor {
 				result = pNumOfMeth / (cNumOfMeth + pNumOfMeth);
 			}
 		} catch (ClassNotFoundException e) {
-			throw new IllegalArgumentException(e);
+			LoggerHelper.handleClassNotFoundException(jc.getClassName(), e);
 		}
 		mClassMetrics.setMfa(result);
 	}

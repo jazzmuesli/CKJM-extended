@@ -32,4 +32,8 @@ public class LoggerHelper {
     public static void printWarning(String warning) {
         mLogger.warning(warning);
     }
+    
+    public static void handleClassNotFoundException(String className, ClassNotFoundException e) {
+    	LoggerHelper.printError("Can't load " + e.getMessage() + " for class " + className);
+    }
 }

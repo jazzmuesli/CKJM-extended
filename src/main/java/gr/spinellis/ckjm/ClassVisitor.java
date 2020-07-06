@@ -107,7 +107,7 @@ public class ClassVisitor extends org.apache.bcel.classfile.EmptyVisitor {
         try {
 			mClassMetrics.setDit(jc.getSuperClasses().length);
 		} catch (ClassNotFoundException e) {
-			LoggerHelper.printError("Can't load " + e.getMessage() + " for class " + jc.getClassName());
+			LoggerHelper.handleClassNotFoundException(jc.getClassName(), e);
 		}
         registerCoupling(super_name);
 

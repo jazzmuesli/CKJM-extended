@@ -93,8 +93,7 @@ public class IcAndCbmClassVisitor extends AbstractClassVisitor {
 			countCase3();
 			saveResults();
 		} catch (ClassNotFoundException e) {
-			throw new IllegalArgumentException(e);
-
+			LoggerHelper.handleClassNotFoundException(jc.getClassName(), e);
 		}
 	}
 
