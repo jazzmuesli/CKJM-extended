@@ -21,6 +21,8 @@ import gr.spinellis.ckjm.utils.CmdLineParser;
 import gr.spinellis.ckjm.utils.LoggerHelper;
 import org.apache.bcel.classfile.ClassParser;
 import org.apache.bcel.classfile.JavaClass;
+import org.apache.bcel.util.ClassPath;
+import org.apache.bcel.util.ClassPathRepository;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -81,13 +83,41 @@ public class MetricsFilter implements ICountingProperities {
     }
 
     /**
+     * The interface for other Java based applications.
+     * Run metrics using classpath of classNames and ideally their dependencies.
+     * 
+     * @param classPath 
+     * @param classNames for instance org.jfree.chart.ui.PaintSample_ESTest
+     * @param outputHandler
+     * @param includeJDK
+     */
+    public static void runMetrics(ClassPath classPath, String[] classNames, CkjmOutputHandler outputHandler, boolean includeJDK) {
+        MetricsFilter mf = new MetricsFilter();
+        mf.mIncludeJdk = includeJDK;
+
+        ClassPathRepository cpRepo = new ClassPathRepository(classPath);
+        for (String className : classNames) {
+			try {
+				JavaClass javaClass = cpRepo.loadClass(className);
+				mf.processClass(javaClass);
+			} catch (ClassNotFoundException e) {
+				LoggerHelper.printError("Can't process class " + className + " due to " + e.getMessage());
+			}
+        }
+            
+
+        mf.mMoaVisitor.end();
+        mf.mMetricsContainer.printMetrics(outputHandler);
+
+    }
+
+    /**
      * The filter's main body.
      * Process command line arguments and the standard input.
      */
     public static void main(String[] argv) {
         MetricsFilter mf = new MetricsFilter();
         CmdLineParser cmdParser = new CmdLineParser();
-
         cmdParser.parse(argv);
 
         if (cmdParser.isArgSet("s")) {
@@ -202,3 +232,4 @@ public class MetricsFilter implements ICountingProperities {
 
 
 }
+
